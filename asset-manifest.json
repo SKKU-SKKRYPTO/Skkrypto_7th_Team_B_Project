@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/Skkrypto_7th_Team_B_Project/static/js/main.ed41329c.chunk.js",
-    "main.js.map": "/Skkrypto_7th_Team_B_Project/static/js/main.ed41329c.chunk.js.map",
-    "runtime-main.js": "/Skkrypto_7th_Team_B_Project/static/js/runtime-main.b0fd4e5d.js",
-    "runtime-main.js.map": "/Skkrypto_7th_Team_B_Project/static/js/runtime-main.b0fd4e5d.js.map",
-    "static/js/2.6f1c21fd.chunk.js": "/Skkrypto_7th_Team_B_Project/static/js/2.6f1c21fd.chunk.js",
-    "static/js/2.6f1c21fd.chunk.js.map": "/Skkrypto_7th_Team_B_Project/static/js/2.6f1c21fd.chunk.js.map",
-    "index.html": "/Skkrypto_7th_Team_B_Project/index.html",
-    "static/js/2.6f1c21fd.chunk.js.LICENSE.txt": "/Skkrypto_7th_Team_B_Project/static/js/2.6f1c21fd.chunk.js.LICENSE.txt"
+    "main.js": "/skkrypto_7th_team_b_project/static/js/main.ed41329c.chunk.js",
+    "main.js.map": "/skkrypto_7th_team_b_project/static/js/main.ed41329c.chunk.js.map",
+    "runtime-main.js": "/skkrypto_7th_team_b_project/static/js/runtime-main.282def15.js",
+    "runtime-main.js.map": "/skkrypto_7th_team_b_project/static/js/runtime-main.282def15.js.map",
+    "static/js/2.f1eeac56.chunk.js": "/skkrypto_7th_team_b_project/static/js/2.f1eeac56.chunk.js",
+    "static/js/2.f1eeac56.chunk.js.map": "/skkrypto_7th_team_b_project/static/js/2.f1eeac56.chunk.js.map",
+    "index.html": "/skkrypto_7th_team_b_project/index.html",
+    "static/js/2.f1eeac56.chunk.js.LICENSE.txt": "/skkrypto_7th_team_b_project/static/js/2.f1eeac56.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.b0fd4e5d.js",
-    "static/js/2.6f1c21fd.chunk.js",
+    "static/js/runtime-main.282def15.js",
+    "static/js/2.f1eeac56.chunk.js",
     "static/js/main.ed41329c.chunk.js"
   ]
 }
