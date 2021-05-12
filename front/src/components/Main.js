@@ -16,7 +16,7 @@ const StyledMainHeader = styled.header`
     display: flex;
     li {
       padding: 0 20px;
-      color: black;
+      color: white;
     }
   }
 `;

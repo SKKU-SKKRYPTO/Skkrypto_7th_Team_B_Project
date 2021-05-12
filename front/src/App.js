@@ -1,13 +1,13 @@
-import React from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom';
-import Article from './components/Article';
-import Author from './components/Author';
-import Guide from './components/Guide';
-import Login from './components/Login';
-import Main from './components/Main';
-import MyPage from './components/MyPage';
-import NFTGallery from './components/NFTGallery';
-import Upload from './components/Upload';
+import React from "react";
+import { HashRouter as Router, Route } from "react-router-dom";
+import Article from "./components/Article";
+import Author from "./components/Author";
+import Guide from "./components/Guide";
+import Login from "./components/Login";
+import Main from "./components/Main";
+import MyPage from "./components/MyPage";
+import NFTGallery from "./components/NFTGallery";
+import Upload from "./components/Upload";
 
 const App = () => {
   return (
