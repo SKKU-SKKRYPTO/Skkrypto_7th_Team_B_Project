@@ -1,6 +1,8 @@
-import React from 'react';
+import { useWeb3React } from '@web3-react/core';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { mintNFT } from '../util/interact';
 import Header from './Header';
 
 const StyledMain = styled.div`
@@ -18,6 +20,7 @@ const StyledMain = styled.div`
       background: rgba(18, 36, 20, 0.73);
       color: white;
       font-size: 1.125rem;
+      cursor: pointer;
     }
   }
   .main {
@@ -45,30 +48,73 @@ const StyledMain = styled.div`
 `;
 
 const Upload = () => {
+  const imageInput = useRef();
+  const [isConnected, setConnectedStatus] = useState(false);
+  const [status, setStatus] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [url, setURL] = useState('');
+  const { account } = useWeb3React();
+  const previewFile = () => {
+    const file = imageInput.current.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener(
+      'load',
+      function () {
+        imageInput.current.src = reader.result;
+        setURL(imageInput.current.src);
+      },
+      false,
+    );
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+  const onUpload = async () => {
+    const { success, status } = await mintNFT(url, name, description); // NFT 생성
+    setStatus(status);
+    setConnectedStatus(success);
+
+    if (success) {
+      setName('');
+      setDescription('');
+      setURL('');
+      imageInput.current.value = '';
+    }
+  };
   return (
     <>
       <Header />
       <StyledMain>
         <div className="head">
           <span className="title">작품 등록</span>
-          <span className="upload">
-            <Link
-              to="/nftgallery"
-              style={{ textDecoration: 'none', color: 'white' }}
-            >
-              UPLOAD
-            </Link>
+          <span className="upload" onClick={onUpload}>
+            UPLOAD
           </span>
         </div>
         <div className="main">
           <span>작품이름</span>
-          <input className="input"></input>
-          <span>카테고리</span>
-          <input className="input"></input>
+          <input
+            className="input"
+            type="text"
+            onChange={(event) => setName(event.target.value)}
+          ></input>
+          <span>작품 파일</span>
+          <input
+            className="input"
+            type="file"
+            ref={imageInput}
+            onChange={() => previewFile()}
+          ></input>
           <span>작품 설명</span>
-          <textarea className="input"></textarea>
+          <textarea
+            className="input"
+            onChange={(event) => setDescription(event.target.value)}
+          ></textarea>
         </div>
       </StyledMain>
+      <div>{status}</div>
     </>
   );
 };

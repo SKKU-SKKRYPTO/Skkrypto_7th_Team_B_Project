@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { getTotal, getTotalTokens } from '../hooks/useNFTs';
 import Header from './Header';
 
 const StyledHead = styled.div`
@@ -37,21 +38,43 @@ const StyledMain = styled.div`
 `;
 const Gallery = styled.div`
   display: inline-block;
-  width: 100%;
+  width: 90%;
   height: 300px;
   margin: 10px;
-  background: gray;
+  ${(props) => css`
+    background-image: url('${props.url}');
+    background-repeat: no-repeat;
+    background-size: cover;
+  `}
 `;
 
-const Article = () => {
+const Article = ({ name, image, description, id }) => {
   return (
-    <Link to="/article">
-      <Gallery />
+    <Link
+      to={{
+        pathname: '/article',
+        state: { name, image, description },
+      }}
+    >
+      <Gallery url={image} />
     </Link>
   );
 };
 
 const NFTGallery = () => {
+  const [tokens, setTokens] = useState([]);
+  useEffect(() => {
+    const getAllTokens = async () => {
+      const allTokens = await getTotalTokens();
+      setTokens(allTokens);
+    };
+    getAllTokens();
+
+    return () => {
+      setTokens([]);
+    };
+  }, []);
+
   return (
     <>
       <Header />
@@ -78,18 +101,9 @@ const NFTGallery = () => {
         </div>
       </StyledHead>
       <StyledMain>
-        <div>
-          <Article />
-          <Article />
-        </div>
-        <div>
-          <Article />
-          <Article />
-        </div>
-        <div>
-          <Article />
-          <Article />
-        </div>
+        {tokens.map((token, idx) => (
+          <Article {...token} key={idx} />
+        ))}
       </StyledMain>
     </>
   );

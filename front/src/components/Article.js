@@ -30,6 +30,11 @@ const StyledMain = styled.div`
     background: gray;
     box-shadow: 10px 5px 5px gray;
     border: 1px solid black;
+    ${(props) => css`
+      background-image: url('${props.image}');
+      background-repeat: no-repeat;
+      background-size: cover;
+    `}
   }
   .text {
     position: relative;
@@ -122,25 +127,8 @@ const StyledList = styled.li`
       border-bottom: 3px solid rgba(18, 36, 20, 1);
     `}
 `;
-const Description = () => {
-  return (
-    <StyledDescription>
-      현재까지 가장 중점적으로 이어나가고 있는 시리즈인 은 아크릴을 여려 겹
-      채색을 한 뒤 수없이 표면을 밀어내고 다시 채색을 하는 작업을 반복한다. 이
-      과정을 통해 안에 있던 선과 색들이 드러나고 반복적으로 서로 중첩된다. 선의
-      규칙성 속에 엇갈리는 불규칙적인 패턴들로 하여금 조형에 영향을 미치며 서로
-      하나로 어우러지게 된다. 시간이란 큰 틀 안에서 계속 반복되고 움직임이
-      축적되는 과정 속에 나타나는 흔적, 잔상들을 표현하였다.
-      <br />
-      <br />
-      현대인의 삶 그 자체에도 관계성과 모든 것 들이 움직이고 서로 부딪히며
-      반복되는 운동이 이루어지고, 이러한 과정의 연속이다. 하나씩 쌓아올린 물감의
-      표면을 밀어내는 과정을 통해 시간의 흔적, 깊이 호흡을 담아낸다. 행위이자
-      일정한 힘의 분산과 집중에 의한 노동 집약적인 작업 과정은 추상의 이미지로
-      나타내며 전체 화면의 균형감을 불러온다. 움직임의 행위와 제작에 소요되는
-      시간을 반영하는 물리적인 증거를 포함 시킴으로서 ‘시간’을 재현하였다.
-    </StyledDescription>
-  );
+const Description = ({ description }) => {
+  return <StyledDescription>{description}</StyledDescription>;
 };
 
 const Author = () => {
@@ -204,7 +192,11 @@ const Buy = () => {
     </StyledBuy>
   );
 };
-const Article = () => {
+const Article = ({ location }) => {
+  const {
+    state: { name, image, description },
+  } = location;
+  console.log(name, image, description);
   const [category, setCategory] = useState('description');
   const onClick = (e) => {
     const {
@@ -222,10 +214,10 @@ const Article = () => {
           <AiOutlineClose size={50} style={{ color: 'white' }} />
         </Link>
       </StyledHead>
-      <StyledMain current={category}>
-        <div className="image">image</div>
+      <StyledMain current={category} image={image}>
+        <div className="image"></div>
         <div className="text">
-          <h1>제목 (제목제목)</h1>
+          <h1>{name}</h1>
           <nav>
             <ul>
               <StyledList
@@ -259,7 +251,7 @@ const Article = () => {
             </ul>
           </nav>
           {category === 'description' ? (
-            <Description />
+            <Description description={description} />
           ) : category === 'author' ? (
             <Author />
           ) : category === 'comments' ? (

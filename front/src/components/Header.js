@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
-import { AiOutlineMenu } from 'react-icons/ai/';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useWeb3React } from '@web3-react/core';
+import { injected } from '../constants/connector';
 
 const StyleHeader = styled.header`
   padding: 0 20px;
@@ -27,6 +28,21 @@ const StyleHeader = styled.header`
 `;
 
 const Header = () => {
+  const [address, setAddress] = useState('');
+  const { account, activate } = useWeb3React();
+  useEffect(() => {
+    const connectWallet = async () => {
+      await activate(injected);
+    };
+    connectWallet();
+    if (account) {
+      setAddress(account);
+    }
+  }, [account, activate]);
+  const connect = async () => {
+    await activate(injected);
+    setAddress(account);
+  };
   return (
     <>
       <StyleHeader>
