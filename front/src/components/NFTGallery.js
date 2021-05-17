@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { getTotal, getTotalTokens } from '../hooks/useNFTs';
+import { getNFT, load } from '../modules/nft';
 import Header from './Header';
 
 const StyledHead = styled.div`
@@ -61,20 +62,7 @@ const Article = ({ name, image, description, id }) => {
   );
 };
 
-const NFTGallery = () => {
-  const [tokens, setTokens] = useState([]);
-  useEffect(() => {
-    const getAllTokens = async () => {
-      const allTokens = await getTotalTokens();
-      setTokens(allTokens);
-    };
-    getAllTokens();
-
-    return () => {
-      setTokens([]);
-    };
-  }, []);
-
+const NFTGallery = ({ tokens }) => {
   return (
     <>
       <Header />
@@ -101,11 +89,18 @@ const NFTGallery = () => {
         </div>
       </StyledHead>
       <StyledMain>
-        {tokens.map((token, idx) => (
-          <Article {...token} key={idx} />
-        ))}
+        {!tokens && <div>로딩 중...</div>}
+        {tokens && tokens.map((token, idx) => <Article {...token} key={idx} />)}
       </StyledMain>
     </>
   );
 };
-export default NFTGallery;
+
+export default connect(
+  ({ nft }) => ({
+    tokens: nft.nfts,
+  }),
+  {
+    getNFT,
+  },
+)(NFTGallery);

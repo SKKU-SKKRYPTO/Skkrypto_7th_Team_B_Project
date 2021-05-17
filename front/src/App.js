@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import Article from './components/Article';
 import Author from './components/Author';
@@ -8,8 +9,12 @@ import Main from './components/Main';
 import MyPage from './components/MyPage';
 import NFTGallery from './components/NFTGallery';
 import Upload from './components/Upload';
+import { getNFT } from './modules/nft';
 
-const App = () => {
+const App = ({ getNFT }) => {
+  useEffect(() => {
+    getNFT();
+  }, [getNFT]);
   return (
     <Router>
       <Route path="/" exact={true} component={Main} />
@@ -24,4 +29,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default connect(null, { getNFT })(App);

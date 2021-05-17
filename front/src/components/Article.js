@@ -20,7 +20,11 @@ const StyledHead = styled.header`
 const StyledMain = styled.div`
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #ffc0cb 0 30%, #ffffff 30% 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(85, 72, 45, 0.7) 0 30%,
+    #ffffff 30% 100%
+  );
   .image {
     position: relative;
     width: 400px;

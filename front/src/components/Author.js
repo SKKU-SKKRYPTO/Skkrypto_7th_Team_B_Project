@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Header from './Header';
 import { BsSearch } from 'react-icons/bs';
+import { connect } from 'react-redux';
 const StyledHead = styled.div`
   .description {
     display: flex;
@@ -59,55 +60,63 @@ const StyledMain = styled.div`
 `;
 const Gallery = styled.div`
   display: inline-block;
-  width: 100%;
+  width: 80%;
   height: 300px;
-  margin: 10px;
-  background: gray;
+  margin-bottom: 30px;
+  ${(props) => css`
+    background-image: url('${props.url}');
+    background-repeat: no-repeat;
+    background-size: cover;
+  `}
 `;
-
-const Author = () => {
+const Article = ({ image }) => {
+  return <Gallery url={image} />;
+};
+const Author = ({ tokens }) => {
   return (
     <>
-      <Header />
-      <StyledHead>
-        <div className="description">
-          <h1>작품 등록</h1>
-          <div>
-            성균인이라면 누구나 자유롭게 창작물을 올릴 수 있습니다.
-            <br />
-            업로드한 창작물은 NFT화 되어 거래되고 보호됩니다.
-          </div>
-        </div>
-        <div>
-          <span className="upload">
-            <Link
-              to="/upload"
-              style={{ textDecoration: 'none', color: 'white' }}
-            >
-              UPLOAD
-            </Link>
-          </span>
-          <input type="text" placeholder="작가 검색" />
-          <div className="icon">
-            <BsSearch size={28} />
-          </div>
-        </div>
-      </StyledHead>
-      <StyledMain>
-        <div>
-          <Gallery />
-          <Gallery />
-        </div>
-        <div>
-          <Gallery />
-          <Gallery />
-        </div>
-        <div>
-          <Gallery />
-          <Gallery />
-        </div>
-      </StyledMain>
+      {!tokens && <div>로딩중...</div>}
+      {tokens && (
+        <>
+          <Header />
+          <StyledHead>
+            <div className="description">
+              <h1>작품 등록</h1>
+              <div>
+                성균인이라면 누구나 자유롭게 창작물을 올릴 수 있습니다.
+                <br />
+                업로드한 창작물은 NFT화 되어 거래되고 보호됩니다.
+              </div>
+            </div>
+            <div>
+              <span className="upload">
+                <Link
+                  to="/upload"
+                  style={{ textDecoration: 'none', color: 'white' }}
+                >
+                  UPLOAD
+                </Link>
+              </span>
+              <input type="text" placeholder="작가 검색" />
+              <div className="icon">
+                <BsSearch size={28} />
+              </div>
+            </div>
+          </StyledHead>
+          <StyledMain>
+            {tokens.map((token) => (
+              <Article image={token.image} />
+            ))}
+          </StyledMain>
+        </>
+      )}
     </>
   );
 };
-export default Author;
+
+export default connect(
+  ({ nft }) => ({
+    tokens: nft.nfts,
+  }),
+  null,
+)(Author);

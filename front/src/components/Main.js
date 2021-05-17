@@ -24,7 +24,7 @@ const StyledMainHeader = styled.header`
 const StyledMain = styled.div`
   height: 100%;
   width: 100%;
-  background-image: url('https://s3-alpha-sig.figma.com/img/9ee2/f09b/e38830be7860d2bf18b936775037b474?Expires=1621209600&Signature=HtC8B1D2XKxC-i2zD3Jcwm0IUIjDO9YcJ8UskpJI7CLdQUYVWScClneDHWtPzfLY09SMMNqH66mgU3ZHrsX~oCXTh5BxRkCbHrJykFK-7XIi-78rWUCqKqYj1z~hh-d-MJ6wMcHgA2Uhqq12y78KHMGXp7oEKPP~z5GjPCvlfWwOPi9urjFvYCm1tD-rPQFmTasbE4s3onvARQw8pu~q4LIFZcFajrs-tn8EkvIE12bIK47nLXz3KI-lgflojxc29XZUNd9ha2KercPRX0G1v2X1WAsBbbK8b~~nx1Jw~X-sVcwq6Zev8gZv1CZbRM9aAcjte2RGhOizEYeN4wtNlQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA');
+  background-image: url('https://www.nationalgallery.sg/sites/default/files/20201119-NGSxGeorgetteChen-WebRes-003.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 

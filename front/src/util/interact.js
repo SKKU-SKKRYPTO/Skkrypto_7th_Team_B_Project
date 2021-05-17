@@ -1,13 +1,12 @@
 require('dotenv').config();
-
 const contractABI = require('../contract-abi.json');
 const { createAlchemyWeb3 } = require('@alch/alchemy-web3');
 const { pinJSONToIPFS } = require('./pinata');
-const contractAddress = '0x70ddFBBbaFe2Ad40e580178C30271bD9b15F6F2f';
+const contractAddress = '0x4b67AaFff227333A920F3f4ECf0E3799F63412fD';
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const web3 = createAlchemyWeb3(alchemyKey);
 
-export const mintNFT = async (url, name, description) => {
+export const mintNFT = async (url, name, description, account) => {
   if (url.trim() === '' || name.trim() === '' || description.trim() === '') {
     return {
       success: false,
@@ -27,17 +26,12 @@ export const mintNFT = async (url, name, description) => {
     };
   }
   const tokenURI = pinataResponse.pinataUrl;
-  console.log('tokenurl is ', tokenURI);
   window.contract = await new web3.eth.Contract(contractABI, contractAddress);
-
   const transactionParameters = {
     to: contractAddress, // Required except during contract publications.
-    from: window.ethereum.selectedAddress, // must match user's active address.
-    data: window.contract.methods
-      .mintNFT(window.ethereum.selectedAddress, tokenURI)
-      .encodeABI(),
+    from: account, // must match user's active address.
+    data: window.contract.methods.mintNFT(account, tokenURI).encodeABI(),
   };
-
   try {
     const txHash = await window.ethereum.request({
       method: 'eth_sendTransaction',

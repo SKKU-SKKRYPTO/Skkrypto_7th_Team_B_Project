@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from './Header';
 
@@ -59,6 +59,8 @@ const StyledMain = styled.div`
   }
 `;
 const Login = () => {
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
   return (
     <>
       <Header />
@@ -70,11 +72,23 @@ const Login = () => {
               <div className="loginInput">
                 <div>
                   <span>아이디</span>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={id}
+                    onChange={(e) => {
+                      setId(e.target.value);
+                    }}
+                  />
                 </div>
                 <div>
                   <span>비밀번호</span>
-                  <input type="password" />
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                  />
                 </div>
               </div>
               <button type="submit">로그인</button>

@@ -1,9 +1,10 @@
 import { useWeb3React } from '@web3-react/core';
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { mintNFT } from '../util/interact';
 import Header from './Header';
+import { connect } from 'react-redux';
+import { getNFT } from '../modules/nft';
 
 const StyledMain = styled.div`
   padding: 70px 200px;
@@ -47,7 +48,7 @@ const StyledMain = styled.div`
   }
 `;
 
-const Upload = () => {
+const Upload = ({ getNFT }) => {
   const imageInput = useRef();
   const [isConnected, setConnectedStatus] = useState(false);
   const [status, setStatus] = useState('');
@@ -72,7 +73,7 @@ const Upload = () => {
     }
   };
   const onUpload = async () => {
-    const { success, status } = await mintNFT(url, name, description); // NFT 생성
+    const { success, status } = await mintNFT(url, name, description, account); // NFT 생성
     setStatus(status);
     setConnectedStatus(success);
 
@@ -81,6 +82,7 @@ const Upload = () => {
       setDescription('');
       setURL('');
       imageInput.current.value = '';
+      getNFT();
     }
   };
   return (
@@ -118,4 +120,5 @@ const Upload = () => {
     </>
   );
 };
-export default Upload;
+
+export default connect(null, { getNFT })(Upload);

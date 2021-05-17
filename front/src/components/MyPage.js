@@ -1,6 +1,21 @@
-import React from 'react';
-import styled from 'styled-components';
+import { useWeb3React } from '@web3-react/core';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import styled, { css } from 'styled-components';
+import { transferToken } from '../hooks/useNFTs';
+import { getNFT } from '../modules/nft';
 import Header from './Header';
+const StyledDarkBackground = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+`;
 const StyledMain = styled.div`
   width: 100%;
   height: 100%;
@@ -77,12 +92,6 @@ const StyledMain = styled.div`
         }
         .pictures {
           display: flex;
-          div {
-            width: 100px;
-            height: 150px;
-            background: gray;
-            margin-right: 15px;
-          }
         }
       }
       .part2 {
@@ -130,7 +139,103 @@ const StyledMain = styled.div`
     }
   }
 `;
-const MyPage = () => {
+const StyledArticle = styled.div`
+  width: 100px;
+  height: 150px;
+  margin-right: 15px;
+  ${(props) => css`
+    background-image: url('${props.url}');
+    background-repeat: no-repeat;
+    background-size: cover;
+  `}
+`;
+const StyledDialogBlock = styled.div`
+  width: 320px;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .image {
+    width: 100px;
+    height: 150px;
+    ${(props) => css`
+      background-image: url('${props.url}');
+      background-repeat: no-repeat;
+      background-size: cover;
+    `}
+
+    margin-bottom: 10px;
+  }
+  .toAddr {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+`;
+const Article = ({ url, tokenId, onClick, setTransferToken }) => {
+  return (
+    <StyledArticle
+      url={url}
+      onClick={() => {
+        onClick((prev) => !prev);
+        setTransferToken({
+          url: url,
+          tokenId: tokenId,
+        });
+      }}
+    />
+  );
+};
+
+const Dialog = ({ url, tokenId, onToggle, fromAddr }) => {
+  const [toAddr, setToAddr] = useState('');
+  const onTransfer = async () => {
+    const { success, status } = await transferToken(
+      fromAddr,
+      toAddr,
+      parseInt(tokenId),
+    );
+    console.log(success, status);
+    getNFT();
+  };
+  return (
+    <StyledDarkBackground>
+      <StyledDialogBlock url={url}>
+        <div className="image" />
+        <input
+          type="text"
+          className="toAddr"
+          placeholder="수신 주소를 입력하세요."
+          value={toAddr}
+          onChange={(e) => setToAddr(e.target.value)}
+        />
+        <div className="buttons">
+          <button onClick={() => onToggle((prev) => !prev)}>취소하기</button>
+          <button onClick={onTransfer}>전송하기</button>
+        </div>
+      </StyledDialogBlock>
+    </StyledDarkBackground>
+  );
+};
+
+const MyPage = ({ nfts }) => {
+  const { account } = useWeb3React();
+  const [myArticle, setMyArticle] = useState([]);
+  const [transferToken, setTransferToken] = useState({});
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if (nfts && account) {
+      const myaritcle = nfts.filter(
+        (nft) => nft.owner.toLowerCase() === account.toLowerCase(),
+      );
+      setMyArticle(myaritcle);
+      console.log(myArticle);
+    }
+    return () => {
+      setMyArticle([]);
+    };
+  }, [nfts, account]);
   return (
     <>
       <Header />
@@ -138,9 +243,7 @@ const MyPage = () => {
         <div className="container">
           <div className="head">
             <span>내 계정</span>
-            <span>
-              내 계정 주소: 0x3f6c462a37CcBE577175C2653d38956C965ㅍ52E75
-            </span>
+            <span>내 계정 주소: {account}</span>
           </div>
           <div className="section">
             <div className="column first">
@@ -154,7 +257,7 @@ const MyPage = () => {
               <div className="part2">
                 <h4>보유 토큰</h4>
                 <div>
-                  <span>550토큰</span>
+                  <span>500토큰</span>
                   <span>더 보기 {'>'}</span>
                 </div>
               </div>
@@ -182,8 +285,15 @@ const MyPage = () => {
                   <span>더 보기 {'>'}</span>
                 </div>
                 <div className="pictures">
-                  <div />
-                  <div />
+                  {myArticle.map((article, idx) => (
+                    <Article
+                      url={article.image}
+                      tokenId={article.id}
+                      key={idx}
+                      onClick={setVisible}
+                      setTransferToken={setTransferToken}
+                    />
+                  ))}
                 </div>
               </div>
               <div className="part2">
@@ -217,8 +327,18 @@ const MyPage = () => {
           </div>
         </div>
       </StyledMain>
+      {visible && (
+        <Dialog onToggle={setVisible} {...transferToken} fromAddr={account} />
+      )}
     </>
   );
 };
 
-export default MyPage;
+export default connect(
+  ({ nft }) => ({
+    nfts: nft.nfts,
+  }),
+  {
+    getNFT,
+  },
+)(MyPage);
