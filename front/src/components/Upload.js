@@ -56,6 +56,7 @@ const Upload = ({ getNFT }) => {
   const [description, setDescription] = useState('');
   const [url, setURL] = useState('');
   const { account } = useWeb3React();
+  const [price, setPrice] = useState('');
   const previewFile = () => {
     const file = imageInput.current.files[0];
     const reader = new FileReader();
@@ -73,7 +74,13 @@ const Upload = ({ getNFT }) => {
     }
   };
   const onUpload = async () => {
-    const { success, status } = await mintNFT(url, name, description, account); // NFT 생성
+    const { success, status } = await mintNFT(
+      url,
+      name,
+      description,
+      account,
+      price,
+    ); // NFT 생성
     setStatus(status);
     setConnectedStatus(success);
 
@@ -101,6 +108,7 @@ const Upload = ({ getNFT }) => {
             className="input"
             type="text"
             onChange={(event) => setName(event.target.value)}
+            value={name}
           ></input>
           <span>작품 파일</span>
           <input
@@ -113,7 +121,16 @@ const Upload = ({ getNFT }) => {
           <textarea
             className="input"
             onChange={(event) => setDescription(event.target.value)}
+            valiue={description}
           ></textarea>
+          <span style={{ padding: '10px 0' }}>작품 가격</span>
+          <input
+            className="input"
+            type="text"
+            onChange={(event) => setPrice(event.target.value)}
+            value={price}
+            placeholder="단위: ether"
+          ></input>
         </div>
       </StyledMain>
       <div>{status}</div>

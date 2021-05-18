@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { AiOutlineClose } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
+import { useWeb3React } from '@web3-react/core';
+import { buyToken } from '../hooks/useNFTs';
+import { convertTypeAcquisitionFromJson } from 'typescript';
+
 const StyledHead = styled.header`
   width: 100%;
   height: 80px;
@@ -166,7 +170,12 @@ const Comments = () => {
     </>
   );
 };
-const Buy = () => {
+const Buy = ({ price, id, owner }) => {
+  const { account } = useWeb3React();
+  console.log('owner is', owner);
+  const onBuy = async () => {
+    const { success, status } = await buyToken(id, account, price, owner);
+  };
   return (
     <StyledBuy>
       <div className="description">
@@ -186,21 +195,24 @@ const Buy = () => {
       <div className="container">
         <div className="info">
           <span>판매금액</span>
-          <span>100토큰</span>
+          <span>{price}토큰</span>
         </div>
       </div>
       <div className="buttons">
         <span className="button1">관심 작품</span>
-        <span className="button2">구매 하기</span>
+        <span className="button2" onClick={onBuy}>
+          구매 하기
+        </span>
       </div>
     </StyledBuy>
   );
 };
 const Article = ({ location }) => {
   const {
-    state: { name, image, description },
+    state: { name, image, description, ethPrice, id, owner },
   } = location;
-  console.log(name, image, description);
+  console.log(id);
+  console.log(location.state);
   const [category, setCategory] = useState('description');
   const onClick = (e) => {
     const {
@@ -261,7 +273,7 @@ const Article = ({ location }) => {
           ) : category === 'comments' ? (
             <Comments />
           ) : (
-            <Buy />
+            <Buy price={ethPrice} id={id} owner={owner} />
           )}
         </div>
       </StyledMain>

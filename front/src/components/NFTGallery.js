@@ -49,12 +49,12 @@ const Gallery = styled.div`
   `}
 `;
 
-const Article = ({ name, image, description, id }) => {
+const Article = ({ name, image, description, id, ethPrice, owner }) => {
   return (
     <Link
       to={{
         pathname: '/article',
-        state: { name, image, description },
+        state: { name, image, description, ethPrice, owner, id },
       }}
     >
       <Gallery url={image} />
@@ -63,6 +63,7 @@ const Article = ({ name, image, description, id }) => {
 };
 
 const NFTGallery = ({ tokens }) => {
+  console.log(tokens);
   return (
     <>
       <Header />
@@ -89,8 +90,9 @@ const NFTGallery = ({ tokens }) => {
         </div>
       </StyledHead>
       <StyledMain>
-        {!tokens && <div>로딩 중...</div>}
-        {tokens && tokens.map((token, idx) => <Article {...token} key={idx} />)}
+        {tokens === null && <div>로딩 중...</div>}
+        {tokens !== null &&
+          tokens.map((token, idx) => <Article {...token} key={idx} />)}
       </StyledMain>
     </>
   );

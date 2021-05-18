@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import styled, { css } from 'styled-components';
-import { transferToken } from '../hooks/useNFTs';
+import { getEther, transferToken } from '../hooks/useNFTs';
 import { getNFT } from '../modules/nft';
 import Header from './Header';
 const StyledDarkBackground = styled.div`
@@ -172,6 +172,10 @@ const StyledDialogBlock = styled.div`
     width: 100%;
     margin-bottom: 10px;
   }
+  p {
+    margin-top: 5px;
+    color: red;
+  }
 `;
 const Article = ({ url, tokenId, onClick, setTransferToken }) => {
   return (
@@ -190,14 +194,17 @@ const Article = ({ url, tokenId, onClick, setTransferToken }) => {
 
 const Dialog = ({ url, tokenId, onToggle, fromAddr }) => {
   const [toAddr, setToAddr] = useState('');
+  const [status, setStatus] = useState('');
   const onTransfer = async () => {
     const { success, status } = await transferToken(
       fromAddr,
       toAddr,
       parseInt(tokenId),
     );
-    console.log(success, status);
-    getNFT();
+    setStatus(status);
+    if (success) {
+      getNFT();
+    }
   };
   return (
     <StyledDarkBackground>
@@ -214,6 +221,7 @@ const Dialog = ({ url, tokenId, onToggle, fromAddr }) => {
           <button onClick={() => onToggle((prev) => !prev)}>취소하기</button>
           <button onClick={onTransfer}>전송하기</button>
         </div>
+        <p>{status}</p>
       </StyledDialogBlock>
     </StyledDarkBackground>
   );
@@ -258,7 +266,7 @@ const MyPage = ({ nfts }) => {
                 <h4>보유 토큰</h4>
                 <div>
                   <span>500토큰</span>
-                  <span>더 보기 {'>'}</span>
+                  <span onClick={() => getEther(account)}>더 보기 {'>'}</span>
                 </div>
               </div>
               <div className="part3">
