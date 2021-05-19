@@ -1,6 +1,6 @@
 require('dotenv').config();
 const contractABI = require('../contract-abi.json');
-const contractAddress = '0x76c529E61d1D0C3b4D08FDeAA175A2c307ceA15b';
+const contractAddress = '0x43f47d84e506Dac4b921854E15D0623A2A739463';
 const { createAlchemyWeb3 } = require('@alch/alchemy-web3');
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const web3 = createAlchemyWeb3(alchemyKey);
@@ -29,34 +29,6 @@ export const getTotalTokens = async () => {
   return tokens;
 };
 
-export const getEther = async (account) => {
-  window.contract = await new web3.eth.Contract(contractABI, contractAddress);
-  const transactionParameters = {
-    to: contractAddress,
-    from: account,
-    data: window.contract.methods.sendTo(account).encodeABI(),
-  };
-  try {
-    const txHash = await window.ethereum.request({
-      method: 'eth_sendTransaction',
-      params: [transactionParameters],
-    });
-
-    return {
-      success: true,
-
-      status:
-        '✅ Check out your transaction on Etherscan: https://ropsten.etherscan.io/tx/' +
-        txHash,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      status: '😥 Something went wrong: ' + error.message,
-    };
-  }
-};
-
 export const buyToken = async (tokenId, buyer, value, seller) => {
   const weiValue = web3.utils.toWei(value, 'ether');
   console.log('tokenId:', tokenId);
@@ -64,9 +36,7 @@ export const buyToken = async (tokenId, buyer, value, seller) => {
   const transactionParameters = {
     to: contractAddress,
     from: buyer,
-    data: window.contract.methods
-      .purchaseToken(parseInt(tokenId), buyer)
-      .encodeABI(),
+    data: window.contract.methods.purchaseToken(parseInt(tokenId)).encodeABI(),
     value: web3.utils.toHex(weiValue),
   };
   try {

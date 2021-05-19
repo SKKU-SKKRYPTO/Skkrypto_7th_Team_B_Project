@@ -13,10 +13,11 @@ contract SKKUNFT is ERC721, Ownable {
     constructor() public payable ERC721("SKKUNFT", "NFT"){
     }
 
-    function purchaseToken(uint256 tokenId, address buyer) public payable{
+    function purchaseToken(uint256 tokenId) public payable{
         uint256 tokenPrice = getTokenPrice(tokenId);
         address tokenSeller = ownerOf(tokenId);
-        sendToken(tokenSeller, buyer, tokenId);
+        require(tokenSeller != msg.sender);
+        sendToken(tokenSeller, msg.sender, tokenId);
         payable(tokenSeller).transfer(msg.value);
     }
 

@@ -2,7 +2,7 @@ require('dotenv').config();
 const contractABI = require('../contract-abi.json');
 const { createAlchemyWeb3 } = require('@alch/alchemy-web3');
 const { pinJSONToIPFS } = require('./pinata');
-const contractAddress = '0x76c529E61d1D0C3b4D08FDeAA175A2c307ceA15b';
+const contractAddress = '0x43f47d84e506Dac4b921854E15D0623A2A739463';
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const web3 = createAlchemyWeb3(alchemyKey);
 const BN = require('bn.js');

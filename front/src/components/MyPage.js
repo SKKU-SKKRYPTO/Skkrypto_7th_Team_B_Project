@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import styled, { css } from 'styled-components';
-import { getEther, transferToken } from '../hooks/useNFTs';
+import { transferToken } from '../hooks/useNFTs';
 import { getNFT } from '../modules/nft';
 import Header from './Header';
 const StyledDarkBackground = styled.div`
@@ -266,7 +266,7 @@ const MyPage = ({ nfts }) => {
                 <h4>보유 토큰</h4>
                 <div>
                   <span>500토큰</span>
-                  <span onClick={() => getEther(account)}>더 보기 {'>'}</span>
+                  <span>더 보기 {'>'}</span>
                 </div>
               </div>
               <div className="part3">
