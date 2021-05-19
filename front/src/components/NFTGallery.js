@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { getNFT, load } from '../modules/nft';
+import { getNFT } from '../modules/nft';
 import Header from './Header';
 
 const StyledHead = styled.div`
@@ -63,7 +63,12 @@ const Article = ({ name, image, description, id, ethPrice, owner }) => {
 };
 
 const NFTGallery = ({ tokens }) => {
-  console.log(tokens);
+  useEffect(() => {
+    const init = async () => {
+      await getNFT();
+    };
+    init();
+  });
   return (
     <>
       <Header />

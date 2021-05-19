@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { login } from '../lib/api/auth';
 import Header from './Header';
-
 const StyledLogin = styled.div`
   width: 100%;
   height: 100%;
@@ -61,6 +62,10 @@ const StyledMain = styled.div`
 const Login = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const onLogin = async () => {
+    const response = await login(id, password);
+    console.log(response);
+  };
   return (
     <>
       <Header />
@@ -91,7 +96,9 @@ const Login = () => {
                   />
                 </div>
               </div>
-              <button type="submit">로그인</button>
+              <button type="submit" onClick={onLogin}>
+                로그인
+              </button>
             </form>
             <div class="save">
               <input type="checkbox" id="saveId" />
@@ -99,7 +106,12 @@ const Login = () => {
             </div>
           </div>
           <ul>
-            <li>성균인 가입</li>
+            <Link
+              to="/register"
+              style={{ color: 'black', textDecoration: 'none' }}
+            >
+              <li>성균인 가입</li>
+            </Link>
             <li>ID 찾기</li>
             <li>PW 찾기</li>
             <li>회원탈퇴</li>

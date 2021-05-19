@@ -48,7 +48,7 @@ const StyledMain = styled.div`
   }
 `;
 
-const Upload = ({ getNFT }) => {
+const Upload = () => {
   const imageInput = useRef();
   const [isConnected, setConnectedStatus] = useState(false);
   const [status, setStatus] = useState('');
@@ -89,7 +89,7 @@ const Upload = ({ getNFT }) => {
       setDescription('');
       setURL('');
       imageInput.current.value = '';
-      getNFT();
+      await getNFT();
     }
   };
   return (

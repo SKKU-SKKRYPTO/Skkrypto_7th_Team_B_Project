@@ -8,13 +8,14 @@ import Login from './components/Login';
 import Main from './components/Main';
 import MyPage from './components/MyPage';
 import NFTGallery from './components/NFTGallery';
+import Register from './components/Register';
 import Upload from './components/Upload';
 import { getNFT } from './modules/nft';
 
 const App = ({ getNFT }) => {
   useEffect(() => {
     getNFT();
-  }, [getNFT]);
+  }, []);
   return (
     <Router>
       <Route path="/" exact={true} component={Main} />
@@ -25,6 +26,7 @@ const App = ({ getNFT }) => {
       <Route path="/author" exact={true} component={Author} />
       <Route path="/upload" exact={true} component={Upload} />
       <Route path="/article" exact={true} component={Article} />
+      <Route path="/register" exact={true} component={Register} />
     </Router>
   );
 };

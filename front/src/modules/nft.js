@@ -1,12 +1,9 @@
 import { getTotalTokens } from '../hooks/useNFTs';
-import { handleActions } from 'redux-actions';
+import { handleActions, createAction } from 'redux-actions';
 
 const LOAD = 'nft/LOAD';
 const LOAD_SUCCESS = 'nft/LOAD_SUCCESS';
 const LOAD_FAILURE = 'nft/LOAD_FAILURE';
-
-const ADD = 'nft/ADD';
-const FINDBYOWNER = 'nft/FINDBYOWNER';
 
 export const getNFT = () => async (dispatch) => {
   console.log('get NFT!');
